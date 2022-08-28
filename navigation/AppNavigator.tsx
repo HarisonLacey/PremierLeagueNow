@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 
 // screens
-import { TeamScreen } from '../screens/Landing'
+import { TeamScreen } from '../screens/Team'
 import { PlayerScreen } from '../screens/Player'
 
 // stack param list
