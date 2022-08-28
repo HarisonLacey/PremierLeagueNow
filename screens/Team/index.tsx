@@ -5,9 +5,9 @@ import React, {
     Dispatch,
     SetStateAction,
 } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 
-export const TeamScreen = () => {
+export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
         useState([])
     const fetchApi = useCallback(async (url: string): Promise<void> => {
@@ -26,13 +26,19 @@ export const TeamScreen = () => {
         }
     }, [])
     useEffect(() => {
+        setTeams([])
         fetchApi('https://v3.football.api-sports.io/players/squads?team=49')
         fetchApi('https://v3.football.api-sports.io/players/squads?team=42')
     }, [fetchApi])
-    console.log(teams)
     return (
-        <View>
-            <Text>Team Screen</Text>
+        <View style={{ flexDirection: 'row' }}>
+            {teams.map(({ players }) => (
+                <FlatList
+                    data={players}
+                    renderItem={({ item }) => <Text>{item.name}</Text>}
+                    keyExtractor={(item) => item.id}
+                />
+            ))}
         </View>
     )
 }
