@@ -25,18 +25,40 @@ export const TeamScreen = (): JSX.Element => {
             console.error(err)
         }
     }, [])
+
     useEffect(() => {
         setTeams([])
         fetchApi('https://v3.football.api-sports.io/players/squads?team=49')
         fetchApi('https://v3.football.api-sports.io/players/squads?team=42')
     }, [fetchApi])
+
+    const renderItem = useCallback(({ item: { name } }: any): JSX.Element => {
+        return (
+            <View>
+                <Text>{name}</Text>
+            </View>
+        )
+    }, [])
+
+    const keyExtractor = useCallback(({ id }: any): string => id, [])
+
+    const getItemLayout = useCallback(
+        (data: any, index: number): any => ({
+            length: 10,
+            offset: 10 * index,
+            index,
+        }),
+        [],
+    )
+
     return (
         <View style={{ flexDirection: 'row' }}>
             {teams.map(({ players }) => (
                 <FlatList
                     data={players}
-                    renderItem={({ item }) => <Text>{item.name}</Text>}
-                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                    keyExtractor={keyExtractor}
+                    getItemLayout={getItemLayout}
                 />
             ))}
         </View>
