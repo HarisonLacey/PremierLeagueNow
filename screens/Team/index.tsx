@@ -10,11 +10,21 @@ import { FlatList, StyleSheet, View, Dimensions } from 'react-native'
 import { AppContainer } from '../../components/AppContainer'
 import { PlayerCard } from '../../components/PlayerCard'
 
+import { PlayerModal } from '../../components/Modals/PlayerModal'
+
+import { Player } from '../../components/PlayerCard'
+
+import { useToggle } from '../../hooks/useToggle'
+
 const screenWidth = Dimensions.get('window').width
 
 export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
         useState([])
+    const [teamPlayer, setPlayer]: [any, Dispatch<SetStateAction<any>>] =
+        useState(null)
+    const [isVisible, toggleIsVisible] = useToggle()
+
     const fetchApi = useCallback(async (url: string): Promise<void> => {
         try {
             const apiResponse = await fetch(url, {
@@ -38,26 +48,46 @@ export const TeamScreen = (): JSX.Element => {
         }
     }, [teams, fetchApi])
 
+    const handleTogglePlayerModal = useCallback(
+        (player: Player): void => {
+            toggleIsVisible()
+            setPlayer(player)
+        },
+        [toggleIsVisible],
+    )
+
     const renderItem = useCallback(
-        ({ item }: any): JSX.Element => <PlayerCard player={item} />,
-        [],
+        ({ item }: any): JSX.Element => (
+            <PlayerCard
+                player={item}
+                handleTogglePlayerModal={handleTogglePlayerModal}
+            />
+        ),
+        [handleTogglePlayerModal],
     )
 
     const keyExtractor = useCallback(({ id }: any): string => id, [])
 
     return (
         <AppContainer>
-            {teams.map(({ players }, i) => (
-                <View key={i} style={styles.flatListContainer}>
-                    <FlatList
-                        data={players}
-                        renderItem={renderItem}
-                        keyExtractor={keyExtractor}
-                        extraData={teams}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </View>
-            ))}
+            <>
+                <PlayerModal
+                    player={teamPlayer}
+                    visible={isVisible}
+                    onRequestClose={toggleIsVisible}
+                />
+                {teams.map(({ players }, i) => (
+                    <View key={i} style={styles.flatListContainer}>
+                        <FlatList
+                            data={players}
+                            renderItem={renderItem}
+                            keyExtractor={keyExtractor}
+                            extraData={teams}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    </View>
+                ))}
+            </>
         </AppContainer>
     )
 }

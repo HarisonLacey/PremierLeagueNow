@@ -1,22 +1,30 @@
 import React from 'react'
 import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
+export type Player = {
+    id: number
+    name: string
+    age: number
+    number: number
+    position: string
+    photo: string
+}
+
 export type PlayerCardProps = {
-    player: {
-        id: number
-        name: string
-        age: number
-        number: number
-        position: string
-        photo: string
-    }
+    player: Player
+    handleTogglePlayerModal: (player: Player) => void
 }
 
 export const PlayerCard = ({
+    player,
     player: { name, position, photo },
+    handleTogglePlayerModal,
 }: PlayerCardProps): JSX.Element => {
     return (
-        <TouchableOpacity style={styles.playerCardContainer}>
+        <TouchableOpacity
+            style={styles.playerCardContainer}
+            onPress={handleTogglePlayerModal.bind(this, player)}
+        >
             <Text>{name}</Text>
             <Image style={styles.playerThumbnail} source={{ uri: photo }} />
             <Text>{position}</Text>
