@@ -5,7 +5,14 @@ import React, {
     Dispatch,
     SetStateAction,
 } from 'react'
-import { FlatList, StyleSheet, View, Dimensions } from 'react-native'
+import {
+    FlatList,
+    StyleSheet,
+    View,
+    Dimensions,
+    ActivityIndicator,
+    Text,
+} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 import { AppContainer } from '../../components/AppContainer'
@@ -31,12 +38,20 @@ const screenWidth = Dimensions.get('window').width
 export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
         useState([])
+    const [teamsCopy, setTeamsCopy]: [
+        Array<any>,
+        Dispatch<SetStateAction<any>>,
+    ] = useState([])
     const [teamPlayer, setPlayer]: [any, Dispatch<SetStateAction<any>>] =
         useState(null)
     const [dropdownValue, setDropdownValue]: [
         any,
         Dispatch<SetStateAction<any>>,
     ] = useState(null)
+    const [isLoading, setIsLoading]: [
+        boolean,
+        Dispatch<SetStateAction<boolean>>,
+    ] = useState(false)
 
     const [isVisible, toggleIsVisible] = useToggle()
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
@@ -46,23 +61,54 @@ export const TeamScreen = (): JSX.Element => {
             const apiResponse = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'x-rapidapi-host': 'v3.football.api-sports.io',
-                    'x-rapidapi-key': '0c9663882ca2a28ea82d9427f6d3dc1a',
+                    'X-RapidAPI-Key':
+                        '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a',
+                    'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
                 },
             })
             const { response } = await apiResponse.json()
             setTeams((t: any) => [...t, ...response])
+            setTeamsCopy((t: any) => [...t, ...response])
+            setIsLoading(false)
         } catch (err) {
             console.error(err)
         }
     }, [])
 
     useEffect(() => {
-        if (!teams.length) {
-            fetchApi('https://v3.football.api-sports.io/players/squads?team=49')
-            fetchApi('https://v3.football.api-sports.io/players/squads?team=42')
-        }
-    }, [teams, fetchApi])
+        setIsLoading(true)
+        setTeams([])
+        fetchApi(
+            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
+        )
+        fetchApi(
+            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=42',
+        )
+    }, [fetchApi])
+
+    // handle dropdown filter value change
+    const handleChangeValue = useCallback(
+        ({ value }: any) => {
+            const teamPositionFilter = teamsCopy.reduce(
+                (acc, { players, team }) => {
+                    const newPlayers = players.reduce(
+                        (a: Array<TeamPlayer>, c: TeamPlayer) => {
+                            if (c.position === value) {
+                                a.push(c)
+                            }
+                            return a
+                        },
+                        [],
+                    )
+                    acc.push({ players: newPlayers, team })
+                    return acc
+                },
+                [],
+            )
+            setTeams(teamPositionFilter)
+        },
+        [teamsCopy],
+    )
 
     const handleTogglePlayerModal = useCallback(
         (player: TeamPlayer): void => {
@@ -98,15 +144,24 @@ export const TeamScreen = (): JSX.Element => {
                     visible={isVisible}
                     onRequestClose={toggleIsVisible}
                 />
-                <View>
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        zIndex: 10,
+                        height: 5,
+                    }}
+                >
                     <DropDownPicker
                         open={dropdownIsVisible}
                         value={dropdownValue}
                         items={POSITIONS}
                         setOpen={toggleDropdownIsVisible}
                         setValue={setDropdownValue}
+                        onSelectItem={handleChangeValue}
                     />
                 </View>
+                {isLoading && <ActivityIndicator size="large" />}
                 {teams.map(({ players }, i) => (
                     <View key={i} style={styles.flatListContainer}>
                         <FlatList
