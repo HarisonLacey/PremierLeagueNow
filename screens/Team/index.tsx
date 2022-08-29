@@ -5,7 +5,7 @@ import React, {
     Dispatch,
     SetStateAction,
 } from 'react'
-import { FlatList, StyleSheet, SafeAreaView, Dimensions } from 'react-native'
+import { FlatList, StyleSheet, View, Dimensions } from 'react-native'
 
 import { AppContainer } from '../../components/AppContainer'
 import { PlayerCard } from '../../components/PlayerCard'
@@ -48,7 +48,7 @@ export const TeamScreen = (): JSX.Element => {
     return (
         <AppContainer>
             {teams.map(({ players }, i) => (
-                <SafeAreaView key={i} style={styles.flatListContainer}>
+                <View key={i} style={styles.flatListContainer}>
                     <FlatList
                         data={players}
                         renderItem={renderItem}
@@ -56,7 +56,7 @@ export const TeamScreen = (): JSX.Element => {
                         extraData={teams}
                         showsVerticalScrollIndicator={false}
                     />
-                </SafeAreaView>
+                </View>
             ))}
         </AppContainer>
     )
