@@ -7,6 +7,8 @@ import React, {
 } from 'react'
 import { View, Text, FlatList } from 'react-native'
 
+import { AppContainer } from '../../components/AppContainer'
+
 export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
         useState([])
@@ -50,7 +52,7 @@ export const TeamScreen = (): JSX.Element => {
     const keyExtractor = useCallback(({ id }: any): string => id, [])
 
     return (
-        <View style={{ flexDirection: 'row' }}>
+        <AppContainer>
             {teams.map(({ players }) => (
                 <FlatList
                     data={players}
@@ -58,6 +60,6 @@ export const TeamScreen = (): JSX.Element => {
                     keyExtractor={keyExtractor}
                 />
             ))}
-        </View>
+        </AppContainer>
     )
 }
