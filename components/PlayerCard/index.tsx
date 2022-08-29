@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
-export type Player = {
+export type TeamPlayer = {
     id: number
     name: string
     age: number
@@ -11,8 +11,8 @@ export type Player = {
 }
 
 export type PlayerCardProps = {
-    player: Player
-    handleTogglePlayerModal: (player: Player) => void
+    player: TeamPlayer
+    handleTogglePlayerModal: (player: TeamPlayer) => void
 }
 
 export const PlayerCard = ({

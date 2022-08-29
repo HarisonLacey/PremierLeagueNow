@@ -12,7 +12,7 @@ import { PlayerCard } from '../../components/PlayerCard'
 
 import { PlayerModal } from '../../components/Modals/PlayerModal'
 
-import { Player } from '../../components/PlayerCard'
+import { TeamPlayer } from '../../components/PlayerCard'
 
 import { useToggle } from '../../hooks/useToggle'
 
@@ -49,7 +49,7 @@ export const TeamScreen = (): JSX.Element => {
     }, [teams, fetchApi])
 
     const handleTogglePlayerModal = useCallback(
-        (player: Player): void => {
+        (player: TeamPlayer): void => {
             toggleIsVisible()
             setPlayer(player)
         },
