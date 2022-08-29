@@ -16,7 +16,7 @@ export const PlayerCard = ({
     player: { name, age, number, position, photo },
 }: PlayerCardProps): JSX.Element => {
     return (
-        <View>
+        <View style={styles.playerCardContainer}>
             <Text>{name}</Text>
             <Image style={styles.playerThumbnail} source={{ uri: photo }} />
             <Text>{position}</Text>
@@ -27,6 +27,9 @@ export const PlayerCard = ({
 }
 
 const styles = StyleSheet.create({
+    playerCardContainer: {
+        alignItems: 'center',
+    },
     playerThumbnail: {
         width: 100,
         height: 100,
