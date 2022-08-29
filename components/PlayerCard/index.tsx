@@ -1,9 +1,9 @@
 import React from 'react'
 import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
-type PlayerCardProps = {
+export type PlayerCardProps = {
     player: {
-        id?: number
+        id: number
         name: string
         age: number
         number: number
@@ -13,15 +13,13 @@ type PlayerCardProps = {
 }
 
 export const PlayerCard = ({
-    player: { name, age, number, position, photo },
+    player: { name, position, photo },
 }: PlayerCardProps): JSX.Element => {
     return (
         <TouchableOpacity style={styles.playerCardContainer}>
             <Text>{name}</Text>
             <Image style={styles.playerThumbnail} source={{ uri: photo }} />
             <Text>{position}</Text>
-            <Text>{age}</Text>
-            <Text>{number}</Text>
         </TouchableOpacity>
     )
 }
