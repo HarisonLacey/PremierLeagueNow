@@ -5,9 +5,10 @@ import React, {
     Dispatch,
     SetStateAction,
 } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 
 import { AppContainer } from '../../components/AppContainer'
+import { PlayerCard } from '../../components/PlayerCard'
 
 export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
@@ -36,11 +37,7 @@ export const TeamScreen = (): JSX.Element => {
     }, [teams, fetchApi])
 
     const renderItem = useCallback(
-        ({ item: { name } }: any): JSX.Element => (
-            <View>
-                <Text>{name}</Text>
-            </View>
-        ),
+        ({ item }: any): JSX.Element => <PlayerCard player={item} />,
         [],
     )
 
