@@ -5,10 +5,12 @@ import React, {
     Dispatch,
     SetStateAction,
 } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, StyleSheet, SafeAreaView, Dimensions } from 'react-native'
 
 import { AppContainer } from '../../components/AppContainer'
 import { PlayerCard } from '../../components/PlayerCard'
+
+const screenWidth = Dimensions.get('window').width
 
 export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
@@ -46,13 +48,24 @@ export const TeamScreen = (): JSX.Element => {
     return (
         <AppContainer>
             {teams.map(({ players }, i) => (
-                <FlatList
-                    key={i}
-                    data={players}
-                    renderItem={renderItem}
-                    keyExtractor={keyExtractor}
-                />
+                <SafeAreaView key={i} style={styles.flatListContainer}>
+                    <FlatList
+                        data={players}
+                        renderItem={renderItem}
+                        keyExtractor={keyExtractor}
+                        extraData={teams}
+                        showsVerticalScrollIndicator={false}
+                    />
+                </SafeAreaView>
             ))}
         </AppContainer>
     )
 }
+
+const styles = StyleSheet.create({
+    flatListContainer: {
+        width: screenWidth / 2,
+        alignItems: 'center',
+        borderWidth: 2,
+    },
+})
