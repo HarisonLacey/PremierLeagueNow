@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 
 type PlayerCardProps = {
     player: {
@@ -13,14 +13,23 @@ type PlayerCardProps = {
 }
 
 export const PlayerCard = ({
-    player: { name, age, number, position },
+    player: { name, age, number, position, photo },
 }: PlayerCardProps): JSX.Element => {
     return (
         <View>
             <Text>{name}</Text>
+            <Image style={styles.playerThumbnail} source={{ uri: photo }} />
             <Text>{position}</Text>
             <Text>{age}</Text>
             <Text>{number}</Text>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    playerThumbnail: {
+        width: 100,
+        height: 100,
+        borderRadius: 10,
+    },
+})
