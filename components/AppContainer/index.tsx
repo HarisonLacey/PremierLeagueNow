@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native'
 
 type AppContainerProps = {
-    children: ReactNode
+    children: Array<JSX.Element>
 }
 
 export const AppContainer = ({ children }: AppContainerProps): JSX.Element => (
