@@ -3,6 +3,8 @@ import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { PlayerCardProps } from './models'
 
+export const PLAYER_CARD_HEIGHT = 150
+
 export const PlayerCard = ({
     player,
     player: { name, position, photo },
@@ -23,6 +25,7 @@ export const PlayerCard = ({
 const styles = StyleSheet.create({
     playerCardContainer: {
         alignItems: 'center',
+        height: PLAYER_CARD_HEIGHT,
     },
     playerThumbnail: {
         width: 100,

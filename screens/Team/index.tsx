@@ -16,6 +16,8 @@ import { TeamPlayer } from '../../components/PlayerCard/models'
 
 import { useToggle } from '../../hooks/useToggle'
 
+import { PLAYER_CARD_HEIGHT } from '../../components/PlayerCard'
+
 const screenWidth = Dimensions.get('window').width
 
 export const TeamScreen = (): JSX.Element => {
@@ -68,6 +70,12 @@ export const TeamScreen = (): JSX.Element => {
 
     const keyExtractor = useCallback(({ id }: any): string => id, [])
 
+    const getItemLayout = (data: any, index: number) => ({
+        length: PLAYER_CARD_HEIGHT,
+        offset: PLAYER_CARD_HEIGHT * index,
+        index,
+    })
+
     return (
         <AppContainer>
             <>
@@ -82,6 +90,7 @@ export const TeamScreen = (): JSX.Element => {
                             data={players}
                             renderItem={renderItem}
                             keyExtractor={keyExtractor}
+                            getItemLayout={getItemLayout}
                             extraData={teams}
                             showsVerticalScrollIndicator={false}
                         />
