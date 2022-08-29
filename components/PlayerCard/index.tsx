@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
 type PlayerCardProps = {
     player: {
@@ -16,13 +16,13 @@ export const PlayerCard = ({
     player: { name, age, number, position, photo },
 }: PlayerCardProps): JSX.Element => {
     return (
-        <View style={styles.playerCardContainer}>
+        <TouchableOpacity style={styles.playerCardContainer}>
             <Text>{name}</Text>
             <Image style={styles.playerThumbnail} source={{ uri: photo }} />
             <Text>{position}</Text>
             <Text>{age}</Text>
             <Text>{number}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
