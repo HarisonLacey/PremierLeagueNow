@@ -6,6 +6,7 @@ import React, {
     SetStateAction,
 } from 'react'
 import { FlatList, StyleSheet, View, Dimensions } from 'react-native'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 import { AppContainer } from '../../components/AppContainer'
 import { PlayerCard } from '../../components/PlayerCard'
@@ -18,6 +19,13 @@ import { useToggle } from '../../hooks/useToggle'
 
 import { PLAYER_CARD_HEIGHT } from '../../components/PlayerCard'
 
+const POSITIONS = [
+    { label: 'Goalkeeper', value: 'Goalkeeper' },
+    { label: 'Defender', value: 'Defender' },
+    { label: 'Midfielder', value: 'Midfielder' },
+    { label: 'Attacker', value: 'Attacker' },
+]
+
 const screenWidth = Dimensions.get('window').width
 
 export const TeamScreen = (): JSX.Element => {
@@ -25,7 +33,13 @@ export const TeamScreen = (): JSX.Element => {
         useState([])
     const [teamPlayer, setPlayer]: [any, Dispatch<SetStateAction<any>>] =
         useState(null)
+    const [dropdownValue, setDropdownValue]: [
+        any,
+        Dispatch<SetStateAction<any>>,
+    ] = useState(null)
+
     const [isVisible, toggleIsVisible] = useToggle()
+    const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
 
     const fetchApi = useCallback(async (url: string): Promise<void> => {
         try {
@@ -84,6 +98,15 @@ export const TeamScreen = (): JSX.Element => {
                     visible={isVisible}
                     onRequestClose={toggleIsVisible}
                 />
+                <View>
+                    <DropDownPicker
+                        open={dropdownIsVisible}
+                        value={dropdownValue}
+                        items={POSITIONS}
+                        setOpen={toggleDropdownIsVisible}
+                        setValue={setDropdownValue}
+                    />
+                </View>
                 {teams.map(({ players }, i) => (
                     <View key={i} style={styles.flatListContainer}>
                         <FlatList
