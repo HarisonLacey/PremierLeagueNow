@@ -5,30 +5,37 @@ import React, {
     Dispatch,
     SetStateAction,
 } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator } from 'react-native'
 
 import { AppContainer } from '../../components/AppContainer'
+
+import { useToggle } from '../../hooks/useToggle'
 
 export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
         useState([])
-    const fetchApi = useCallback(async (url: string): Promise<void> => {
-        try {
-            const apiResponse = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key':
-                        '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a',
-                    'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
-                },
-            })
-            const { response } = await apiResponse.json()
-            setTeams((t: any) => [...t, ...response])
-            console.log(response)
-        } catch (err) {
-            console.error(err)
-        }
-    }, [])
+    const [isLoading, setIsLoading] = useToggle()
+    const fetchApi = useCallback(
+        async (url: string): Promise<void> => {
+            try {
+                setIsLoading()
+                const apiResponse = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key':
+                            '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a',
+                        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
+                    },
+                })
+                const { response } = await apiResponse.json()
+                setTeams((t: any) => [...t, ...response])
+                setIsLoading()
+            } catch (err) {
+                console.error(err)
+            }
+        },
+        [setIsLoading],
+    )
 
     useEffect(() => {
         setTeams([])
@@ -53,13 +60,15 @@ export const TeamScreen = (): JSX.Element => {
 
     return (
         <AppContainer>
-            {teams.map(({ players }) => (
-                <FlatList
-                    data={players}
-                    renderItem={renderItem}
-                    keyExtractor={keyExtractor}
-                />
-            ))}
+            {isLoading && <ActivityIndicator />}
+            {!isLoading &&
+                teams.map(({ players }) => (
+                    <FlatList
+                        data={players}
+                        renderItem={renderItem}
+                        keyExtractor={keyExtractor}
+                    />
+                ))}
         </AppContainer>
     )
 }
