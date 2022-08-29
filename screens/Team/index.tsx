@@ -15,12 +15,14 @@ export const TeamScreen = (): JSX.Element => {
             const apiResponse = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'x-rapidapi-host': 'v3.football.api-sports.io',
-                    'x-rapidapi-key': '0c9663882ca2a28ea82d9427f6d3dc1a',
+                    'X-RapidAPI-Key':
+                        '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a',
+                    'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
                 },
             })
             const { response } = await apiResponse.json()
             setTeams((t: any) => [...t, ...response])
+            console.log(response)
         } catch (err) {
             console.error(err)
         }
@@ -28,28 +30,24 @@ export const TeamScreen = (): JSX.Element => {
 
     useEffect(() => {
         setTeams([])
-        fetchApi('https://v3.football.api-sports.io/players/squads?team=49')
-        fetchApi('https://v3.football.api-sports.io/players/squads?team=42')
+        fetchApi(
+            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
+        )
+        fetchApi(
+            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=42',
+        )
     }, [fetchApi])
 
-    const renderItem = useCallback(({ item: { name } }: any): JSX.Element => {
-        return (
+    const renderItem = useCallback(
+        ({ item: { name } }: any): JSX.Element => (
             <View>
                 <Text>{name}</Text>
             </View>
-        )
-    }, [])
-
-    const keyExtractor = useCallback(({ id }: any): string => id, [])
-
-    const getItemLayout = useCallback(
-        (data: any, index: number): any => ({
-            length: 10,
-            offset: 10 * index,
-            index,
-        }),
+        ),
         [],
     )
+
+    const keyExtractor = useCallback(({ id }: any): string => id, [])
 
     return (
         <View style={{ flexDirection: 'row' }}>
@@ -58,7 +56,6 @@ export const TeamScreen = (): JSX.Element => {
                     data={players}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
-                    getItemLayout={getItemLayout}
                 />
             ))}
         </View>
