@@ -12,7 +12,7 @@ import { PlayerCard } from '../../components/PlayerCard'
 
 import { PlayerModal } from '../../components/Modals/PlayerModal'
 
-import { TeamPlayer } from '../../components/PlayerCard'
+import { TeamPlayer } from '../../components/PlayerCard/models'
 
 import { useToggle } from '../../hooks/useToggle'
 

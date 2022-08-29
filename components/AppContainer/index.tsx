@@ -1,9 +1,7 @@
 import React from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native'
 
-type AppContainerProps = {
-    children: JSX.Element
-}
+import { AppContainerProps } from './models'
 
 export const AppContainer = ({ children }: AppContainerProps): JSX.Element => (
     <SafeAreaView style={styles.appContainer}>{children}</SafeAreaView>

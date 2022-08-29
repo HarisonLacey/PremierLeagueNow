@@ -1,19 +1,7 @@
 import React from 'react'
 import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
-export type TeamPlayer = {
-    id: number
-    name: string
-    age: number
-    number: number
-    position: string
-    photo: string
-}
-
-export type PlayerCardProps = {
-    player: TeamPlayer
-    handleTogglePlayerModal: (player: TeamPlayer) => void
-}
+import { PlayerCardProps } from './models'
 
 export const PlayerCard = ({
     player,

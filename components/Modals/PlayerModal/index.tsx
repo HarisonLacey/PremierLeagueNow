@@ -1,13 +1,7 @@
 import React from 'react'
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 
-import { TeamPlayer } from '../../PlayerCard'
-
-type PlayerModalProps = {
-    player: TeamPlayer
-    visible: boolean
-    onRequestClose: () => void
-}
+import { PlayerModalProps } from './models'
 
 export const PlayerModal = ({
     player,
