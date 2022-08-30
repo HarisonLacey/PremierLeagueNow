@@ -11,7 +11,6 @@ import {
     View,
     Dimensions,
     ActivityIndicator,
-    Text,
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -27,11 +26,14 @@ import { useToggle } from '../../hooks/useToggle'
 import { PLAYER_CARD_HEIGHT } from '../../components/PlayerCard'
 
 const POSITIONS = [
+    { label: 'All positions', value: 'All positions' },
     { label: 'Goalkeeper', value: 'Goalkeeper' },
     { label: 'Defender', value: 'Defender' },
     { label: 'Midfielder', value: 'Midfielder' },
     { label: 'Attacker', value: 'Attacker' },
 ]
+
+const DEFAULT_TEAM_ARRAY_LENGTH = 2
 
 const screenWidth = Dimensions.get('window').width
 
@@ -78,6 +80,7 @@ export const TeamScreen = (): JSX.Element => {
     useEffect(() => {
         setIsLoading(true)
         setTeams([])
+        setTeamsCopy([])
         fetchApi(
             'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
         )
@@ -89,23 +92,27 @@ export const TeamScreen = (): JSX.Element => {
     // handle dropdown filter value change
     const handleChangeValue = useCallback(
         ({ value }: any) => {
-            const teamPositionFilter = teamsCopy.reduce(
-                (acc, { players, team }) => {
-                    const newPlayers = players.reduce(
-                        (a: Array<TeamPlayer>, c: TeamPlayer) => {
-                            if (c.position === value) {
-                                a.push(c)
-                            }
-                            return a
-                        },
-                        [],
-                    )
-                    acc.push({ players: newPlayers, team })
-                    return acc
-                },
-                [],
-            )
-            setTeams(teamPositionFilter)
+            if (value === 'All positions') {
+                setTeams(teamsCopy)
+            } else {
+                console.log(teamsCopy)
+                const teamPositionFilter = teamsCopy.reduce(
+                    (acc, { players, team }) => {
+                        const newPlayers = players.reduce(
+                            (a: Array<TeamPlayer>, c: TeamPlayer) => {
+                                c.position === value && a.push(c)
+
+                                return a
+                            },
+                            [],
+                        )
+                        acc.push({ players: newPlayers, team })
+                        return acc
+                    },
+                    [],
+                )
+                setTeams(teamPositionFilter)
+            }
         },
         [teamsCopy],
     )
@@ -144,14 +151,7 @@ export const TeamScreen = (): JSX.Element => {
                     visible={isVisible}
                     onRequestClose={toggleIsVisible}
                 />
-                <View
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        zIndex: 10,
-                        height: 5,
-                    }}
-                >
+                <View style={styles.dropdownFilterContainer}>
                     <DropDownPicker
                         open={dropdownIsVisible}
                         value={dropdownValue}
@@ -159,6 +159,7 @@ export const TeamScreen = (): JSX.Element => {
                         setOpen={toggleDropdownIsVisible}
                         setValue={setDropdownValue}
                         onSelectItem={handleChangeValue}
+                        placeholder="All positions"
                     />
                 </View>
                 {isLoading && <ActivityIndicator size="large" />}
@@ -169,7 +170,6 @@ export const TeamScreen = (): JSX.Element => {
                             renderItem={renderItem}
                             keyExtractor={keyExtractor}
                             getItemLayout={getItemLayout}
-                            extraData={teams}
                             showsVerticalScrollIndicator={false}
                         />
                     </View>
@@ -184,5 +184,13 @@ const styles = StyleSheet.create({
         width: screenWidth / 2,
         alignItems: 'center',
         borderWidth: 2,
+        paddingTop: 100,
+    },
+    dropdownFilterContainer: {
+        position: 'absolute',
+        top: 0,
+        zIndex: 10,
+        width: '100%',
+        backgroundColor: '#fff',
     },
 })
