@@ -33,8 +33,6 @@ const POSITIONS = [
     { label: 'Attacker', value: 'Attacker' },
 ]
 
-const DEFAULT_TEAM_ARRAY_LENGTH = 2
-
 const screenWidth = Dimensions.get('window').width
 
 export const TeamScreen = (): JSX.Element => {
@@ -95,7 +93,6 @@ export const TeamScreen = (): JSX.Element => {
             if (value === 'All positions') {
                 setTeams(teamsCopy)
             } else {
-                console.log(teamsCopy)
                 const teamPositionFilter = teamsCopy.reduce(
                     (acc, { players, team }) => {
                         const newPlayers = players.reduce(
