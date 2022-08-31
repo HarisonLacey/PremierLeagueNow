@@ -16,7 +16,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 export const AppNavigator = () => (
     <NavigationContainer>
         <Stack.Navigator initialRouteName="Team">
-            <Stack.Screen name="Team" component={TeamScreen} options={{}} />
+            <Stack.Screen
+                name="Team"
+                component={TeamScreen}
+                options={{
+                    headerTitleAlign: 'center',
+                    title: 'Premier League Now',
+                }}
+            />
         </Stack.Navigator>
     </NavigationContainer>
 )
