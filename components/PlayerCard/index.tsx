@@ -11,6 +11,8 @@ import { PlayerCardProps } from './models'
 
 import { useToggle } from '../../hooks/useToggle'
 
+import { COLORS } from '../../config/styles'
+
 const screenWidth = Dimensions.get('window').width
 
 export const PLAYER_CARD_HEIGHT = 300
@@ -53,10 +55,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 15,
         borderWidth: 1,
-        borderColor: '#808080',
+        borderColor: COLORS.playerCardBorder,
         borderRadius: 10,
         marginVertical: 10,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.white,
         width: (screenWidth / 2) * 0.9,
     },
     playerThumbnail: {

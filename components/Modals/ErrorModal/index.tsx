@@ -10,6 +10,8 @@ import {
 
 import { ErrorModalProps } from './models'
 
+import { COLORS } from '../../../config/styles'
+
 export const ErrorModal = ({
     description,
     onRequestClose,
@@ -42,13 +44,13 @@ export const ErrorModal = ({
 
 const styles = StyleSheet.create({
     modalContainer: {
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: COLORS.modalBackground,
         padding: 50,
         flex: 1,
         justifyContent: 'center',
     },
     modalContentContainer: {
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.white,
         flex: 0.5,
         borderRadius: 10,
         padding: 20,

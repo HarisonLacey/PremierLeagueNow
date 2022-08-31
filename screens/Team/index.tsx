@@ -24,6 +24,8 @@ import { TeamPlayer } from '../../components/PlayerCard/models'
 
 import { useToggle } from '../../hooks/useToggle'
 
+import { COLORS } from '../../config/styles'
+
 import {
     API_OPTIONS,
     API_ONE,
@@ -195,6 +197,6 @@ const styles = StyleSheet.create({
         top: 0,
         zIndex: 10,
         width: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.white,
     },
 })
