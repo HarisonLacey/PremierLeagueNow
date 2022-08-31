@@ -23,8 +23,6 @@ import { TeamPlayer } from '../../components/PlayerCard/models'
 
 import { useToggle } from '../../hooks/useToggle'
 
-import { PLAYER_CARD_HEIGHT } from '../../components/PlayerCard'
-
 const POSITIONS = [
     { label: 'All positions', value: 'All positions' },
     { label: 'Goalkeeper', value: 'Goalkeeper' },
@@ -43,7 +41,7 @@ export const TeamScreen = (): JSX.Element => {
         Dispatch<SetStateAction<any>>,
     ] = useState([])
     const [teamPlayer, setPlayer]: [any, Dispatch<SetStateAction<any>>] =
-        useState(null)
+        useState({})
     const [dropdownValue, setDropdownValue]: [
         any,
         Dispatch<SetStateAction<any>>,
@@ -53,7 +51,7 @@ export const TeamScreen = (): JSX.Element => {
         Dispatch<SetStateAction<boolean>>,
     ] = useState(false)
 
-    const [isVisible, toggleIsVisible] = useToggle()
+    const [isPlayerModalVisible, toggleIsPlayerModalVisible] = useToggle()
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
 
     const fetchApi = useCallback(async (url: string): Promise<void> => {
@@ -118,10 +116,10 @@ export const TeamScreen = (): JSX.Element => {
 
     const handleTogglePlayerModal = useCallback(
         (player: TeamPlayer): void => {
-            toggleIsVisible()
+            toggleIsPlayerModalVisible()
             setPlayer(player)
         },
-        [toggleIsVisible],
+        [toggleIsPlayerModalVisible],
     )
 
     const renderItem = useCallback(
@@ -141,8 +139,8 @@ export const TeamScreen = (): JSX.Element => {
             <>
                 <PlayerModal
                     player={teamPlayer}
-                    visible={isVisible}
-                    onRequestClose={toggleIsVisible}
+                    visible={isPlayerModalVisible}
+                    onRequestClose={toggleIsPlayerModalVisible}
                 />
                 <View style={styles.dropdownFilterContainer}>
                     <DropDownPicker
