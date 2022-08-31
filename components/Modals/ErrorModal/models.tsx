@@ -1,5 +1,7 @@
+import { Dispatch, SetStateAction } from 'react'
+
 export type ErrorModalProps = {
     description: String
     visible: boolean
-    onRequestClose: () => void
+    onRequestClose: Dispatch<SetStateAction<boolean>>
 }

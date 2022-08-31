@@ -18,6 +18,7 @@ import { AppContainer } from '../../components/AppContainer'
 import { PlayerCard } from '../../components/PlayerCard'
 
 import { PlayerModal } from '../../components/Modals/PlayerModal'
+import { ErrorModal } from '../../components/Modals/ErrorModal'
 
 import { TeamPlayer } from '../../components/PlayerCard/models'
 
@@ -50,6 +51,14 @@ export const TeamScreen = (): JSX.Element => {
         boolean,
         Dispatch<SetStateAction<boolean>>,
     ] = useState(false)
+    const [isErrorModalVisible, toggleIsErrorModalVisible]: [
+        boolean,
+        Dispatch<SetStateAction<boolean>>,
+    ] = useState(false)
+    const [errorDescription, setErrorDescription]: [
+        string,
+        Dispatch<SetStateAction<string>>,
+    ] = useState('')
 
     const [isPlayerModalVisible, toggleIsPlayerModalVisible] = useToggle()
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
@@ -65,27 +74,36 @@ export const TeamScreen = (): JSX.Element => {
                 },
             })
             const { response } = await apiResponse.json()
-            setTeams((t: any) => [...t, ...response])
-            setTeamsCopy((t: any) => [...t, ...response])
+            if (response.length === 0 && !isErrorModalVisible) {
+                toggleIsErrorModalVisible(true)
+                setErrorDescription(
+                    'API limit reached. Please update API key in App config file.',
+                )
+            } else {
+                setTeams((t: any) => [...t, ...response])
+                setTeamsCopy((t: any) => [...t, ...response])
+            }
             setIsLoading(false)
         } catch (err) {
             console.error(err)
+            if (!isErrorModalVisible) {
+                toggleIsErrorModalVisible(true)
+                setErrorDescription('API call error')
+            }
         }
     }, [])
 
     useEffect(() => {
-        if (!teams.length) {
-            setIsLoading(true)
-            setTeams([])
-            setTeamsCopy([])
-            fetchApi(
-                'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
-            )
-            fetchApi(
-                'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=42',
-            )
-        }
-    }, [teams, fetchApi])
+        setIsLoading(true)
+        setTeams([])
+        setTeamsCopy([])
+        fetchApi(
+            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
+        )
+        fetchApi(
+            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=42',
+        )
+    }, [fetchApi])
 
     // handle dropdown filter value change
     const handleChangeValue = useCallback(
@@ -141,6 +159,11 @@ export const TeamScreen = (): JSX.Element => {
                     player={teamPlayer}
                     visible={isPlayerModalVisible}
                     onRequestClose={toggleIsPlayerModalVisible}
+                />
+                <ErrorModal
+                    description={errorDescription}
+                    visible={isErrorModalVisible}
+                    onRequestClose={toggleIsErrorModalVisible}
                 />
                 <View style={styles.dropdownFilterContainer}>
                     <DropDownPicker
