@@ -11,6 +11,7 @@ import {
     View,
     Dimensions,
     ActivityIndicator,
+    Image,
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -145,6 +146,14 @@ export const TeamScreen = (): JSX.Element => {
 
     const keyExtractor = useCallback(({ id }: any): string => id, [])
 
+    const FlatListHeader = ({ team: { logo } }: any) => (
+        <View style={styles.teamLogoContainer}>
+            <Image style={styles.teamLogo} source={{ uri: logo }} />
+        </View>
+    )
+
+    console.log(teams)
+
     return (
         <AppContainer>
             <>
@@ -167,14 +176,17 @@ export const TeamScreen = (): JSX.Element => {
                         setValue={setDropdownValue}
                         onSelectItem={handleChangeValue}
                         placeholder="All positions"
+                        style={styles.dropdownFilter}
+                        disableBorderRadius
                     />
                 </View>
                 {isLoading && <ActivityIndicator size="large" />}
-                {teams.map(({ players }, i) => (
+                {teams.map(({ players, team }, i) => (
                     <View key={i} style={styles.flatListContainer}>
                         <FlatList
                             data={players}
                             renderItem={renderItem}
+                            ListHeaderComponent={<FlatListHeader team={team} />}
                             keyExtractor={keyExtractor}
                             showsVerticalScrollIndicator={false}
                         />
@@ -198,5 +210,15 @@ const styles = StyleSheet.create({
         zIndex: 10,
         width: '100%',
         backgroundColor: COLORS.white,
+    },
+    dropdownFilter: {
+        borderColor: COLORS.white,
+    },
+    teamLogoContainer: {
+        alignItems: 'center',
+    },
+    teamLogo: {
+        width: 80,
+        height: 80,
     },
 })
