@@ -152,8 +152,6 @@ export const TeamScreen = (): JSX.Element => {
         </View>
     )
 
-    console.log(teams)
-
     return (
         <AppContainer>
             <>
@@ -180,7 +178,11 @@ export const TeamScreen = (): JSX.Element => {
                         disableBorderRadius
                     />
                 </View>
-                {isLoading && <ActivityIndicator size="large" />}
+                {isLoading && (
+                    <View style={styles.activityIndicator}>
+                        <ActivityIndicator size="large" color={COLORS.black} />
+                    </View>
+                )}
                 {teams.map(({ players, team }, i) => (
                     <View key={i} style={styles.flatListContainer}>
                         <FlatList
@@ -220,5 +222,10 @@ const styles = StyleSheet.create({
     teamLogo: {
         width: 80,
         height: 80,
+    },
+    activityIndicator: {
+        alignSelf: 'center',
+        width: screenWidth,
+        justifyContent: 'center',
     },
 })
