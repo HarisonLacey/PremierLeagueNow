@@ -32,6 +32,8 @@ import {
     API_ONE,
     API_TWO,
     POSITIONS,
+    defaultApiErrorMessage,
+    limitReachedErrorMessage,
 } from '../../config/appConfig'
 
 const screenWidth = Dimensions.get('window').width
@@ -72,9 +74,7 @@ export const TeamScreen = (): JSX.Element => {
                 const { response } = await apiResponse.json()
                 if (response.length === 0 && !isErrorModalVisible) {
                     toggleIsErrorModalVisible(true)
-                    setErrorDescription(
-                        'API limit reached. Please update API key in App config file',
-                    )
+                    setErrorDescription(limitReachedErrorMessage)
                 } else {
                     setTeams((t: any) => [...t, ...response])
                     setTeamsCopy((t: any) => [...t, ...response])
@@ -84,7 +84,7 @@ export const TeamScreen = (): JSX.Element => {
                 console.error(err)
                 if (!isErrorModalVisible) {
                     toggleIsErrorModalVisible(true)
-                    setErrorDescription('API call error')
+                    setErrorDescription(defaultApiErrorMessage)
                 }
             }
         },
