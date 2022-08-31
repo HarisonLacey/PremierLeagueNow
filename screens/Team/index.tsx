@@ -24,13 +24,12 @@ import { TeamPlayer } from '../../components/PlayerCard/models'
 
 import { useToggle } from '../../hooks/useToggle'
 
-const POSITIONS = [
-    { label: 'All positions', value: 'All positions' },
-    { label: 'Goalkeeper', value: 'Goalkeeper' },
-    { label: 'Defender', value: 'Defender' },
-    { label: 'Midfielder', value: 'Midfielder' },
-    { label: 'Attacker', value: 'Attacker' },
-]
+import {
+    API_OPTIONS,
+    API_ONE,
+    API_TWO,
+    POSITIONS,
+} from '../../config/appConfig'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -66,14 +65,7 @@ export const TeamScreen = (): JSX.Element => {
     const fetchApi = useCallback(
         async (url: string): Promise<void> => {
             try {
-                const apiResponse = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'X-RapidAPI-Key':
-                            '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a',
-                        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
-                    },
-                })
+                const apiResponse = await fetch(url, API_OPTIONS)
                 const { response } = await apiResponse.json()
                 if (response.length === 0 && !isErrorModalVisible) {
                     toggleIsErrorModalVisible(true)
@@ -100,12 +92,8 @@ export const TeamScreen = (): JSX.Element => {
         setIsLoading(true)
         setTeams([])
         setTeamsCopy([])
-        fetchApi(
-            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
-        )
-        fetchApi(
-            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=42',
-        )
+        fetchApi(API_ONE)
+        fetchApi(API_TWO)
     }, [fetchApi])
 
     // handle dropdown filter value change
