@@ -73,7 +73,7 @@ export const TeamScreen = (): JSX.Element => {
                 if (response.length === 0 && !isErrorModalVisible) {
                     toggleIsErrorModalVisible(true)
                     setErrorDescription(
-                        'API limit reached. Please update API key in App config file.',
+                        'API limit reached. Please update API key in App config file',
                     )
                 } else {
                     setTeams((t: any) => [...t, ...response])
@@ -102,7 +102,7 @@ export const TeamScreen = (): JSX.Element => {
     // handle dropdown filter value change
     const handleChangeValue = useCallback(
         ({ value }: any) => {
-            if (value === 'All positions') {
+            if (value === POSITIONS[0].label) {
                 setTeams(teamsCopy)
             } else {
                 const teamPositionFilter = teamsCopy.reduce(
