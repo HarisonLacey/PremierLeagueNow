@@ -63,35 +63,38 @@ export const TeamScreen = (): JSX.Element => {
     const [isPlayerModalVisible, toggleIsPlayerModalVisible] = useToggle()
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
 
-    const fetchApi = useCallback(async (url: string): Promise<void> => {
-        try {
-            const apiResponse = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key':
-                        '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a',
-                    'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
-                },
-            })
-            const { response } = await apiResponse.json()
-            if (response.length === 0 && !isErrorModalVisible) {
-                toggleIsErrorModalVisible(true)
-                setErrorDescription(
-                    'API limit reached. Please update API key in App config file.',
-                )
-            } else {
-                setTeams((t: any) => [...t, ...response])
-                setTeamsCopy((t: any) => [...t, ...response])
+    const fetchApi = useCallback(
+        async (url: string): Promise<void> => {
+            try {
+                const apiResponse = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key':
+                            '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a',
+                        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
+                    },
+                })
+                const { response } = await apiResponse.json()
+                if (response.length === 0 && !isErrorModalVisible) {
+                    toggleIsErrorModalVisible(true)
+                    setErrorDescription(
+                        'API limit reached. Please update API key in App config file.',
+                    )
+                } else {
+                    setTeams((t: any) => [...t, ...response])
+                    setTeamsCopy((t: any) => [...t, ...response])
+                }
+                setIsLoading(false)
+            } catch (err) {
+                console.error(err)
+                if (!isErrorModalVisible) {
+                    toggleIsErrorModalVisible(true)
+                    setErrorDescription('API call error')
+                }
             }
-            setIsLoading(false)
-        } catch (err) {
-            console.error(err)
-            if (!isErrorModalVisible) {
-                toggleIsErrorModalVisible(true)
-                setErrorDescription('API call error')
-            }
-        }
-    }, [])
+        },
+        [isErrorModalVisible],
+    )
 
     useEffect(() => {
         setIsLoading(true)

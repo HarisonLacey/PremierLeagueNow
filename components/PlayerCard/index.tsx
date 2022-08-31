@@ -1,9 +1,17 @@
 import React from 'react'
-import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+    Text,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
+    Dimensions,
+} from 'react-native'
 
 import { PlayerCardProps } from './models'
 
 import { useToggle } from '../../hooks/useToggle'
+
+const screenWidth = Dimensions.get('window').width
 
 export const PLAYER_CARD_HEIGHT = 300
 
@@ -45,9 +53,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 15,
         borderWidth: 1,
+        borderColor: '#808080',
         borderRadius: 10,
         marginVertical: 10,
         backgroundColor: '#fff',
+        width: (screenWidth / 2) * 0.9,
     },
     playerThumbnail: {
         width: 100,
@@ -56,9 +66,9 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     heartIcon: {
-        width: 20,
-        height: 20,
-        marginVertical: 5,
+        width: 25,
+        height: 25,
+        marginVertical: 10,
     },
     text: {
         fontWeight: 'bold',
