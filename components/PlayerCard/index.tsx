@@ -5,7 +5,7 @@ import { PlayerCardProps } from './models'
 
 import { useToggle } from '../../hooks/useToggle'
 
-export const PLAYER_CARD_HEIGHT = 150
+export const PLAYER_CARD_HEIGHT = 300
 
 export const PlayerCard = ({
     player,
@@ -18,9 +18,9 @@ export const PlayerCard = ({
             style={styles.playerCardContainer}
             onPress={handleTogglePlayerModal.bind(this, player)}
         >
-            <Text>{name}</Text>
+            <Text style={[styles.text, styles.name]}>{name}</Text>
             <Image style={styles.playerThumbnail} source={{ uri: photo }} />
-            <Text>{position}</Text>
+            <Text style={styles.text}>{position}</Text>
             {!isLiked ? (
                 <TouchableOpacity onPress={toggleIsLiked}>
                     <Image
@@ -43,15 +43,27 @@ export const PlayerCard = ({
 const styles = StyleSheet.create({
     playerCardContainer: {
         alignItems: 'center',
-        height: PLAYER_CARD_HEIGHT,
+        padding: 15,
+        borderWidth: 1,
+        borderRadius: 10,
+        marginVertical: 10,
+        backgroundColor: '#fff',
     },
     playerThumbnail: {
         width: 100,
         height: 100,
         borderRadius: 10,
+        marginVertical: 5,
     },
     heartIcon: {
         width: 20,
         height: 20,
+        marginVertical: 5,
+    },
+    text: {
+        fontWeight: 'bold',
+    },
+    name: {
+        fontSize: 15,
     },
 })

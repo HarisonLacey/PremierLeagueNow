@@ -1,10 +1,17 @@
 import React from 'react'
-import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+    View,
+    Text,
+    Modal,
+    TouchableOpacity,
+    StyleSheet,
+    Image,
+} from 'react-native'
 
 import { PlayerModalProps } from './models'
 
 export const PlayerModal = ({
-    player,
+    player: { photo, name, position, age, number },
     onRequestClose,
     ...props
 }: PlayerModalProps) => {
@@ -12,10 +19,24 @@ export const PlayerModal = ({
         <Modal {...props} transparent>
             <View style={styles.modalContainer}>
                 <View style={styles.modalContentContainer}>
-                    <Text>Hello</Text>
-                    <TouchableOpacity onPress={onRequestClose}>
-                        <Text>Close</Text>
+                    <TouchableOpacity
+                        style={styles.closeButton}
+                        onPress={onRequestClose}
+                    >
+                        <Image
+                            style={styles.closeIcon}
+                            source={require('../../../assets/close.png')}
+                        />
                     </TouchableOpacity>
+                    <Image
+                        style={styles.playerThumbnail}
+                        source={{ uri: photo }}
+                    />
+
+                    <Text style={styles.text}>Name: {name}</Text>
+                    <Text style={styles.text}>Position: {position}</Text>
+                    <Text style={styles.text}>Number: {number}</Text>
+                    <Text style={styles.text}>Age: {age}</Text>
                 </View>
             </View>
         </Modal>
@@ -33,5 +54,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flex: 0.5,
         borderRadius: 10,
+        padding: 20,
+    },
+    playerThumbnail: {
+        width: 150,
+        height: 150,
+        borderRadius: 10,
+        alignSelf: 'center',
+        marginVertical: 15,
+    },
+    closeButton: {
+        alignSelf: 'flex-end',
+    },
+    closeIcon: {
+        width: 15,
+        height: 15,
+    },
+    text: {
+        fontWeight: 'bold',
+        fontSize: 15,
     },
 })

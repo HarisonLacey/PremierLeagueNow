@@ -76,16 +76,18 @@ export const TeamScreen = (): JSX.Element => {
     }, [])
 
     useEffect(() => {
-        setIsLoading(true)
-        setTeams([])
-        setTeamsCopy([])
-        fetchApi(
-            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
-        )
-        fetchApi(
-            'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=42',
-        )
-    }, [fetchApi])
+        if (!teams.length) {
+            setIsLoading(true)
+            setTeams([])
+            setTeamsCopy([])
+            fetchApi(
+                'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49',
+            )
+            fetchApi(
+                'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=42',
+            )
+        }
+    }, [teams, fetchApi])
 
     // handle dropdown filter value change
     const handleChangeValue = useCallback(
@@ -134,12 +136,6 @@ export const TeamScreen = (): JSX.Element => {
 
     const keyExtractor = useCallback(({ id }: any): string => id, [])
 
-    const getItemLayout = (data: any, index: number) => ({
-        length: PLAYER_CARD_HEIGHT,
-        offset: PLAYER_CARD_HEIGHT * index,
-        index,
-    })
-
     return (
         <AppContainer>
             <>
@@ -166,7 +162,6 @@ export const TeamScreen = (): JSX.Element => {
                             data={players}
                             renderItem={renderItem}
                             keyExtractor={keyExtractor}
-                            getItemLayout={getItemLayout}
                             showsVerticalScrollIndicator={false}
                         />
                     </View>
@@ -180,8 +175,8 @@ const styles = StyleSheet.create({
     flatListContainer: {
         width: screenWidth / 2,
         alignItems: 'center',
-        borderWidth: 2,
-        paddingTop: 100,
+        paddingTop: 80,
+        paddingHorizontal: 5,
     },
     dropdownFilterContainer: {
         position: 'absolute',
