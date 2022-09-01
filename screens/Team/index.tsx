@@ -31,6 +31,7 @@ import { useToggle } from '../../hooks/useToggle'
 
 import { COLORS } from '../../config/styles'
 
+// api config imports
 import {
     API_OPTIONS,
     API_ONE,
@@ -78,7 +79,7 @@ export const TeamScreen = (): JSX.Element => {
             try {
                 const apiResponse = await fetch(url, API_OPTIONS)
                 const { response } = await apiResponse.json()
-                if (response.length === 0 && !isErrorModalVisible) {
+                if (response && response.length === 0 && !isErrorModalVisible) {
                     toggleIsErrorModalVisible(true)
                     setErrorDescription(limitReachedErrorMessage)
                 } else {
