@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         alignSelf: 'flex-end',
+        padding: 10,
     },
     closeIcon: {
         width: 15,
@@ -73,10 +74,12 @@ const styles = StyleSheet.create({
     text: {
         fontWeight: 'bold',
         fontSize: 25,
+        color: COLORS.black,
     },
     description: {
         fontWeight: 'bold',
         fontSize: 15,
         marginVertical: 10,
+        color: COLORS.black,
     },
 })

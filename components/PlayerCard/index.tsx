@@ -15,8 +15,6 @@ import { COLORS } from '../../config/styles'
 
 const screenWidth = Dimensions.get('window').width
 
-export const PLAYER_CARD_HEIGHT = 300
-
 // player card
 export const PlayerCard = ({
     player,
@@ -33,14 +31,20 @@ export const PlayerCard = ({
             <Image style={styles.playerThumbnail} source={{ uri: photo }} />
             <Text style={styles.text}>{position}</Text>
             {!isLiked ? (
-                <TouchableOpacity onPress={toggleIsLiked}>
+                <TouchableOpacity
+                    style={styles.heartIconContainer}
+                    onPress={toggleIsLiked}
+                >
                     <Image
                         style={styles.heartIcon}
                         source={require('../../assets/like.png')}
                     />
                 </TouchableOpacity>
             ) : (
-                <TouchableOpacity onPress={toggleIsLiked}>
+                <TouchableOpacity
+                    style={styles.heartIconContainer}
+                    onPress={toggleIsLiked}
+                >
                     <Image
                         style={styles.heartIcon}
                         source={require('../../assets/liked.png')}
@@ -68,6 +72,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginVertical: 5,
     },
+    heartIconContainer: {
+        padding: 10,
+    },
     heartIcon: {
         width: 25,
         height: 25,
@@ -75,6 +82,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontWeight: 'bold',
+        color: COLORS.black,
     },
     name: {
         fontSize: 15,

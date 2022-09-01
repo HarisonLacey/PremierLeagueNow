@@ -16,7 +16,7 @@ export const API_TWO =
 
 export const defaultApiErrorMessage = 'API call error'
 export const limitReachedErrorMessage =
-    'API limit reached. Please update API key in App config file'
+    'API limit reached. Please update API key in App config file.'
 
 export const POSITIONS = [
     { label: 'All positions', value: 'All positions' },
