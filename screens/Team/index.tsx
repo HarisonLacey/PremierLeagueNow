@@ -74,29 +74,25 @@ export const TeamScreen = (): JSX.Element => {
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
 
     // fetch api function
-    const fetchApi = useCallback(
-        async (url: string): Promise<void> => {
-            try {
-                const apiResponse = await fetch(url, API_OPTIONS)
-                const { response } = await apiResponse.json()
-                if (response && response.length === 0 && !isErrorModalVisible) {
-                    toggleIsErrorModalVisible(true)
-                    setErrorDescription(limitReachedErrorMessage)
-                } else {
-                    setTeams((t: any) => [...t, ...response])
-                    setTeamsCopy((t: any) => [...t, ...response])
-                }
-                setIsLoading(false)
-            } catch (err) {
-                console.error(err)
-                if (!isErrorModalVisible) {
-                    toggleIsErrorModalVisible(true)
-                    setErrorDescription(defaultApiErrorMessage)
-                }
+    const fetchApi = useCallback(async (url: string): Promise<void> => {
+        try {
+            const apiResponse = await fetch(url, API_OPTIONS)
+            const { response } = await apiResponse.json()
+            if (response && response.length === 0) {
+                toggleIsErrorModalVisible(true)
+                setErrorDescription(limitReachedErrorMessage)
+            } else if (response && response.length > 0) {
+                setTeams((t: any) => [...t, ...response])
+                setTeamsCopy((t: any) => [...t, ...response])
             }
-        },
-        [isErrorModalVisible],
-    )
+            setIsLoading(false)
+        } catch (err) {
+            console.error(err)
+
+            toggleIsErrorModalVisible(true)
+            setErrorDescription(defaultApiErrorMessage)
+        }
+    }, [])
 
     // fetch api effect
     useEffect(() => {
