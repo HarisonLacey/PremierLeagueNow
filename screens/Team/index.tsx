@@ -15,14 +15,18 @@ import {
 } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 
+// components
 import { AppContainer } from '../../components/AppContainer'
 import { PlayerCard } from '../../components/PlayerCard'
 
+// modals
 import { PlayerModal } from '../../components/Modals/PlayerModal'
 import { ErrorModal } from '../../components/Modals/ErrorModal'
 
+// model
 import { TeamPlayer } from '../../components/PlayerCard/models'
 
+// toggle hook
 import { useToggle } from '../../hooks/useToggle'
 
 import { COLORS } from '../../config/styles'
