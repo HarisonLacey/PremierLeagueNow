@@ -9,6 +9,6 @@ You can use the API’s provided via https://api-sports.io/
 (i.e - https://api-sports.io/documentation/formula-1/v1)
 ## Run project
 1. yarn install 
-2. cd ios && pod install
+2. if using ios device - cd ios && pod install
 3. yarn start
 4. yarn android/ios
