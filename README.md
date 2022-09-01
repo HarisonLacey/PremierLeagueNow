@@ -1,4 +1,6 @@
 # Premier League Now
+## About
+App that displays two of my favourite Premier League teams.
 ## Objective
 Produce a simple React Native app that retrieves and lists the players/drivers for two of your
 favourite teams - the results should be displayed in a two column grid layout and we should
