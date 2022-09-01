@@ -1,3 +1,4 @@
+// app config
 const API_KEY = '19bf388045msh417cd2e0d111ee8p1eec85jsnc46e0facaf9a'
 
 export const API_OPTIONS = {

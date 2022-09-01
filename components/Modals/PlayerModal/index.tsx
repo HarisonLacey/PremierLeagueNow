@@ -12,6 +12,7 @@ import { PlayerModalProps } from './models'
 
 import { COLORS } from '../../../config/styles'
 
+// player modal
 export const PlayerModal = ({
     player: { photo, name, position, age, number },
     onRequestClose,

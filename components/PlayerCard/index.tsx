@@ -17,6 +17,7 @@ const screenWidth = Dimensions.get('window').width
 
 export const PLAYER_CARD_HEIGHT = 300
 
+// player card
 export const PlayerCard = ({
     player,
     player: { name, position, photo },

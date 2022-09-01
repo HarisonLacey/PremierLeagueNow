@@ -38,6 +38,7 @@ import {
 
 const screenWidth = Dimensions.get('window').width
 
+// team screen
 export const TeamScreen = (): JSX.Element => {
     const [teams, setTeams]: [Array<any>, Dispatch<SetStateAction<any>>] =
         useState([])
@@ -67,6 +68,7 @@ export const TeamScreen = (): JSX.Element => {
     const [isPlayerModalVisible, toggleIsPlayerModalVisible] = useToggle()
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
 
+    // fetch api function
     const fetchApi = useCallback(
         async (url: string): Promise<void> => {
             try {
@@ -91,6 +93,7 @@ export const TeamScreen = (): JSX.Element => {
         [isErrorModalVisible],
     )
 
+    // fetch api effect
     useEffect(() => {
         setIsLoading(true)
         setTeams([])
@@ -126,6 +129,7 @@ export const TeamScreen = (): JSX.Element => {
         [teamsCopy],
     )
 
+    // toggle player modal function
     const handleTogglePlayerModal = useCallback(
         (player: TeamPlayer): void => {
             toggleIsPlayerModalVisible()
@@ -134,6 +138,7 @@ export const TeamScreen = (): JSX.Element => {
         [toggleIsPlayerModalVisible],
     )
 
+    // flatList render item
     const renderItem = useCallback(
         ({ item }: any): JSX.Element => (
             <PlayerCard
@@ -144,8 +149,10 @@ export const TeamScreen = (): JSX.Element => {
         [handleTogglePlayerModal],
     )
 
+    // flatList key extractor
     const keyExtractor = useCallback(({ id }: any): string => id, [])
 
+    // flatList header component
     const FlatListHeader = ({ team: { logo } }: any) => (
         <View style={styles.teamLogoContainer}>
             <Image style={styles.teamLogo} source={{ uri: logo }} />

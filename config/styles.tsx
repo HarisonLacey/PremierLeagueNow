@@ -1,3 +1,4 @@
+// style config
 export const COLORS = {
     white: '#fff',
     playerCardBorder: '#808080',

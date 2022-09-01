@@ -12,6 +12,7 @@ import { ErrorModalProps } from './models'
 
 import { COLORS } from '../../../config/styles'
 
+// error modal
 export const ErrorModal = ({
     description,
     onRequestClose,
