@@ -19,7 +19,11 @@ export const PlayerModal = ({
     ...props
 }: PlayerModalProps) => {
     return (
-        <Modal {...props} transparent>
+        <Modal
+            {...props}
+            onRequestClose={onRequestClose.bind(this, false)}
+            transparent
+        >
             <View style={styles.modalContainer}>
                 <View style={styles.modalContentContainer}>
                     <TouchableOpacity

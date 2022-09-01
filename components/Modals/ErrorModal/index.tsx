@@ -13,12 +13,16 @@ import { ErrorModalProps } from './models'
 import { COLORS } from '../../../config/styles'
 
 // error modal
-export const ErrorModal = ({ onRequestClose, ...props }: ErrorModalProps) => {
+export const ErrorModal = ({ onRequestClose, visible }: ErrorModalProps) => {
     useEffect(() => {
-        setTimeout(() => onRequestClose(false), 4000)
-    })
+        visible && setTimeout(() => onRequestClose(false), 4000)
+    }, [visible, onRequestClose])
     return (
-        <Modal {...props} transparent>
+        <Modal
+            visible={visible}
+            onRequestClose={onRequestClose.bind(this, false)}
+            transparent
+        >
             <View style={styles.modalContainer}>
                 <View style={styles.modalContentContainer}>
                     <TouchableOpacity
