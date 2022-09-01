@@ -70,10 +70,6 @@ export const TeamScreen = (): JSX.Element => {
         boolean,
         Dispatch<SetStateAction<boolean>>,
     ] = useState(false)
-    const [errorModalType, setErrorModalType]: [
-        string,
-        Dispatch<SetStateAction<string>>,
-    ] = useState('')
 
     const [isPlayerModalVisible, toggleIsPlayerModalVisible] = useToggle()
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
@@ -88,8 +84,6 @@ export const TeamScreen = (): JSX.Element => {
                 )
                 const { response } = await apiResponse.json()
                 if (response && response.length === 0) {
-                    toggleIsErrorModalVisible(true)
-                    setErrorModalType('limit')
                     toggleIsFallback(true)
                 } else if (response && response.length > 0) {
                     setTeams((t: any) => [...t, ...response])
@@ -99,7 +93,6 @@ export const TeamScreen = (): JSX.Element => {
             } catch (err) {
                 console.error(err)
                 toggleIsErrorModalVisible(true)
-                setErrorModalType('default')
                 toggleIsFallback(true)
             }
         },
@@ -181,7 +174,6 @@ export const TeamScreen = (): JSX.Element => {
                     onRequestClose={toggleIsPlayerModalVisible}
                 />
                 <ErrorModal
-                    errorModalType={errorModalType}
                     visible={isErrorModalVisible}
                     onRequestClose={toggleIsErrorModalVisible}
                 />

@@ -19,12 +19,13 @@ export const FALLBACK_API_OPTIONS = {
     },
 }
 
-// fallback apis
+// apis
 export const API_ONE =
     'https://v3.football.api-sports.io/players/squads?team=49'
 export const API_TWO =
     'https://v3.football.api-sports.io/players/squads?team=42'
 
+// fallback apis
 export const FALLBACK_API_ONE =
     'https://api-football-v1.p.rapidapi.com/v3/players/squads?team=49'
 export const FALLBACK_API_TWO =
