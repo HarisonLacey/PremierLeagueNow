@@ -83,6 +83,7 @@ export const TeamScreen = (): JSX.Element => {
                     !isFallback ? API_OPTIONS : FALLBACK_API_OPTIONS,
                 )
                 const { response } = await apiResponse.json()
+                // check if api limit reached - if api reached, revert to fallback api that returns same data array
                 if (response && response.length === 0) {
                     toggleIsFallback(true)
                 } else if (response && response.length > 0) {
