@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     View,
     Text,
@@ -14,10 +14,13 @@ import { COLORS } from '../../../config/styles'
 
 // error modal
 export const ErrorModal = ({
-    description,
+    errorModalType,
     onRequestClose,
     ...props
 }: ErrorModalProps) => {
+    useEffect(() => {
+        setTimeout(() => onRequestClose(false), 4000)
+    }, [onRequestClose])
     return (
         <Modal {...props} transparent>
             <View style={styles.modalContainer}>
@@ -35,8 +38,14 @@ export const ErrorModal = ({
                         style={styles.errorIcon}
                         source={require('../../../assets/error.png')}
                     />
-                    <Text style={styles.text}>An error occurred</Text>
-                    <Text style={styles.description}>{description}</Text>
+                    <Text style={styles.text}>
+                        {errorModalType === 'default'
+                            ? 'API error occurred'
+                            : 'API limit reached'}
+                    </Text>
+                    <Text style={styles.description}>
+                        Reverted to fallback API.
+                    </Text>
                 </View>
             </View>
         </Modal>

@@ -37,8 +37,9 @@ import {
     API_ONE,
     API_TWO,
     POSITIONS,
-    defaultApiErrorMessage,
-    limitReachedErrorMessage,
+    FALLBACK_API_OPTIONS,
+    FALLBACK_API_ONE,
+    FALLBACK_API_TWO,
 } from '../../config/appConfig'
 
 const screenWidth = Dimensions.get('window').width
@@ -65,7 +66,11 @@ export const TeamScreen = (): JSX.Element => {
         boolean,
         Dispatch<SetStateAction<boolean>>,
     ] = useState(false)
-    const [errorDescription, setErrorDescription]: [
+    const [isFallback, toggleIsFallback]: [
+        boolean,
+        Dispatch<SetStateAction<boolean>>,
+    ] = useState(false)
+    const [errorModalType, setErrorModalType]: [
         string,
         Dispatch<SetStateAction<string>>,
     ] = useState('')
@@ -73,35 +78,42 @@ export const TeamScreen = (): JSX.Element => {
     const [isPlayerModalVisible, toggleIsPlayerModalVisible] = useToggle()
     const [dropdownIsVisible, toggleDropdownIsVisible] = useToggle()
 
-    // fetch api function
-    const fetchApi = useCallback(async (url: string): Promise<void> => {
-        try {
-            const apiResponse = await fetch(url, API_OPTIONS)
-            const { response } = await apiResponse.json()
-            if (response && response.length === 0) {
+    // fetch api function with fallback functionality
+    const fetchApi = useCallback(
+        async (url: string): Promise<void> => {
+            try {
+                const apiResponse = await fetch(
+                    url,
+                    !isFallback ? API_OPTIONS : FALLBACK_API_OPTIONS,
+                )
+                const { response } = await apiResponse.json()
+                if (response && response.length === 0) {
+                    toggleIsErrorModalVisible(true)
+                    setErrorModalType('limit')
+                    toggleIsFallback(true)
+                } else if (response && response.length > 0) {
+                    setTeams((t: any) => [...t, ...response])
+                    setTeamsCopy((t: any) => [...t, ...response])
+                }
+                setIsLoading(false)
+            } catch (err) {
+                console.error(err)
                 toggleIsErrorModalVisible(true)
-                setErrorDescription(limitReachedErrorMessage)
-            } else if (response && response.length > 0) {
-                setTeams((t: any) => [...t, ...response])
-                setTeamsCopy((t: any) => [...t, ...response])
+                setErrorModalType('default')
+                toggleIsFallback(true)
             }
-            setIsLoading(false)
-        } catch (err) {
-            console.error(err)
-
-            toggleIsErrorModalVisible(true)
-            setErrorDescription(defaultApiErrorMessage)
-        }
-    }, [])
+        },
+        [isFallback],
+    )
 
     // fetch api effect
     useEffect(() => {
         setIsLoading(true)
         setTeams([])
         setTeamsCopy([])
-        fetchApi(API_ONE)
-        fetchApi(API_TWO)
-    }, [fetchApi])
+        fetchApi(!isFallback ? API_ONE : FALLBACK_API_ONE)
+        fetchApi(!isFallback ? API_TWO : FALLBACK_API_TWO)
+    }, [isFallback, fetchApi])
 
     // handle dropdown filter value change
     const handleChangeValue = useCallback(
@@ -169,7 +181,7 @@ export const TeamScreen = (): JSX.Element => {
                     onRequestClose={toggleIsPlayerModalVisible}
                 />
                 <ErrorModal
-                    description={errorDescription}
+                    errorModalType={errorModalType}
                     visible={isErrorModalVisible}
                     onRequestClose={toggleIsErrorModalVisible}
                 />
